@@ -4,4 +4,6 @@ const router = Router();
 
 router.get("/", orderController);
 
+router.post("/");
+
 export default router;

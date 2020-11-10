@@ -7,6 +7,7 @@ const orderScheme = mongoose.Schema({
     type: String,
     required: true,
     enum: ["Kara yolu", "demir yolu", "hava yolu", "deniz yolu"],
+    default: "Kara yolu",
   },
   shipAdress: {
     type: String,
