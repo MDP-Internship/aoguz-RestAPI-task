@@ -1,22 +1,21 @@
 import mongoose, { model } from "mongoose";
+import productModel from "../model/Product";
 
 const userSchema = mongoose.Schema({
   id: {
     type: String,
-    required: true,
   },
   name: {
     type: String,
-    required: true,
   },
-  adress: {
+  date: {
+    date: Date.now(),
+  },
+  total_order_count: {
     type: String,
-    required: true,
   },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
+
+  orders: { productModel },
 });
 
 export default model("User", userSchema);
