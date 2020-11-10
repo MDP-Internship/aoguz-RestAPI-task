@@ -4,9 +4,13 @@
 @host= http://localhost:8000  
 #host bağlı olcağın url
 # @query=? gönderilmek istenen sorgu
-GET {{host}}/ HTTP/1.1
+GET {{host}}/product HTTP/1.1
 
 ###
-GET {{host}}/irregular HTTP/1.1
+GET {{host}}/order HTTP/1.1
+
+###
+GET {{host}}/user HTTP/1.1
+
 content-type: application/json
 
