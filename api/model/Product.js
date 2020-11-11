@@ -8,11 +8,6 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-
-  count: {
-    type: Number,
-    required: true,
-  },
 });
 
 export default model("Product", productSchema);
