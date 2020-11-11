@@ -1,5 +1,5 @@
 import mongoose, { model } from "mongoose";
-import productModel from "../model/Product";
+import orderModel from "../model/Order";
 
 const userSchema = mongoose.Schema({
   id: {
@@ -8,14 +8,10 @@ const userSchema = mongoose.Schema({
   name: {
     type: String,
   },
-  date: {
-    date: Date.now(),
-  },
-  total_order_count: {
+  surname: {
     type: String,
   },
-
-  orders: { productModel },
+  orders: { orderModel },
 });
 
 export default model("User", userSchema);
