@@ -26,10 +26,11 @@ class UserController {
 
   static async updateUserCont(req, res, next) {
     try {
-      const updatedUser = await Users.updateOne(
+      const updatedUser = new Users.updateOne(
         { _id: req.params.userId },
         { $set: { name: req.body.name } },
         { $set: { surname: req.body.surname } }
+
         // orders kendi içinden mi güncelleniyor ??
       );
       res.json(updatedUser);
