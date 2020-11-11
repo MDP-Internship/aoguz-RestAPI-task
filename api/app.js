@@ -12,7 +12,7 @@ const userRoute = "../api/routes/user.js";
 
 app.use("/user", userRoute);
 app.use("/order", orderRoute);
-app.use("/user", userRoute);
+app.use("/product", productRoute);
 
 //connect to db
 var uri =
