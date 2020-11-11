@@ -1,4 +1,7 @@
 {
-    "printWidth": 100,
-    "singleQuote": false
-  }
+  "prettier/prettier": [
+    "error"
+  ],
+  "semi": false,
+  "singleQuote": true
+}

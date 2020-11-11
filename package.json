@@ -10,7 +10,7 @@
     "clean": "del /f /q /s build && mkdir build",
     "build-babel": "babel -d ./build ./api -s",
     "build": "npm run build-babel",
-    "start": "node api/app.js"
+    "start": "nodemon api/app.js"
   },
   "type": "module",
   "author": "",
