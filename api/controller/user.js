@@ -10,9 +10,8 @@ class UserController {
   static async postUserCont(req, res, next) {
     const postUsers = new Users({
       name: req.body.name,
-      date: req.body.date,
-      total_order_count: req.body.total_order_count,
-      orders: orderModel,
+      surname: req.body.surname,
+      orders: req.body.orderModel,
     });
 
     postUsers
@@ -23,6 +22,35 @@ class UserController {
       .catch((err) => {
         console.log("post işlemi sırasında hata çıktı hata kodu : " + err);
       });
+  }
+
+  static async updateUserCont(req, res, next) {
+    try {
+      const updatedUser = await Users.updateOne(
+        { _id: req.params.userId },
+        { $set: { name: req.body.name } },
+        { $set: { surname: req.body.surname } }
+        // orders kendi içinden mi güncelleniyor ??
+      );
+      res.json(updatedUser);
+    } catch (error) {
+      res.json({
+        message: "Güncelleme işlemi yapılırken hata oluştu",
+        errorCode: error,
+      });
+    }
+  }
+
+  static async deleteUserCont(req, res, next) {
+    try {
+      const deletedUser = await Users.remove({ _id: req.params.userId });
+      res.json(deletedUser);
+    } catch (error) {
+      res.json({
+        message: "Silme işlemi yapılırken hata oluştu",
+        errorCode: error,
+      });
+    }
   }
 }
 
