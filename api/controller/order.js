@@ -1,4 +1,4 @@
-import Order from '../model/Order'
+const Order = require('../model/Order.js')
 
 class OrderController {
   static async getOrderCont(req, res, next) {
@@ -50,4 +50,4 @@ class OrderController {
     }
   }
 }
-export default OrderController
+module.exports = OrderController

@@ -1,5 +1,5 @@
-import mongoose, { model } from 'mongoose'
-import orderModel from '../model/Order'
+const mongoose = require('mongoose')
+const orderModel = require('../model/Order.js')
 
 const userSchema = mongoose.Schema({
   id: {
@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
   surname: {
     type: String,
   },
-  orders: { orderModel },
+  /* orders: orderModel, */
 })
 
-export default model('User', userSchema)
+module.exports = mongoose.model('User', userSchema)

@@ -1,13 +1,12 @@
-import mongoose, { model } from 'mongoose'
+const mongoose = require('mongoose')
 
-const productSchema = mongoose.Schema({
+const productShema = mongoose.Schema({
   id: {
     type: String,
   },
   productInfo: {
     type: String,
-    required: true,
   },
 })
 
-export default model('Product', productSchema)
+module.exports = mongoose.model('Product', productShema)

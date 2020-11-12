@@ -1,4 +1,4 @@
-import Users from '../model/User'
+const Users = require('../model/User.js')
 
 class UserController {
   static async getUserCont(req, res, next) {
@@ -55,4 +55,4 @@ class UserController {
   }
 }
 
-export default UserController
+module.exports = UserController

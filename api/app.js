@@ -1,13 +1,9 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
-import orderRoute from './routes/order.js'
-import userRoute from './routes/user.js'
-import productRoute from './routes/product.js'
-
-console.log(userRoute)
-console.log(orderRoute)
-console.log(productRoute)
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const orderRoute = require('./routes/order.js')
+const productRoute = require('./routes/product.js')
+const userRoute = require('./routes/user.js')
 
 const app = express()
 app.use(bodyParser.json())
@@ -32,6 +28,6 @@ var db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error'))
 
 // listening
-app.listen(5000, () => {
+app.listen(3000, () => {
   console.log('3000 portu çalıştırıldı')
 })

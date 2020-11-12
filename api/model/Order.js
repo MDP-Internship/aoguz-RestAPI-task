@@ -1,21 +1,17 @@
-import mongoose, { model } from 'mongoose'
-import moduleName from '../model/Product'
-const orderScheme = mongoose.Schema([
-  {
-    id: {
-      type: String,
-    },
-    product: {
-      moduleName,
-    },
-    count: {
-      type: String,
-    },
-    date: {
-      type: Date,
-      default: Date.now(),
-    },
+const mongoose = require('mongoose')
+const productShema = require('../model/Product.js')
+const orderScheme = mongoose.Schema({
+  id: {
+    type: String,
   },
-])
 
-export default model('Order', orderScheme)
+  count: {
+    type: String,
+  },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
+})
+
+module.exports = mongoose.model('Order', orderScheme)

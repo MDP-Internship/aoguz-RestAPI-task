@@ -1,5 +1,4 @@
-import Product from '../model/Product'
-
+const Product = require('../model/Product.js')
 class ProductController {
   static async getProductCont(req, res, next) {
     Product.find({}, (err, product) => {
@@ -52,4 +51,4 @@ class ProductController {
     }
   }
 }
-export default ProductController
+module.exports = ProductController

@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --fix --ext .js,.jsx .",
-    "dev": "nodemon — exec babel-node api/app.js",
+    "dev": "nodemon — exec babel-node api/app.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del /f /q /s build && mkdir build",
     "build-babel": "babel -d ./build ./api -s",
     "build": "npm run build-babel",
     "start": "nodemon api/app.js"
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -1,9 +1,10 @@
-import { Router } from 'express'
-import OrderController from '../controller/order'
-const router = Router()
+const express = require('express')
+
+const router = express.Router()
+const OrderController = require('../controller/order.js')
 router.get('/', OrderController.getOrderCont)
 router.post('/', OrderController.postOrderCont)
 router.patch('/:orderId', OrderController.updateOrderCont)
 router.delete('/:orderId', OrderController.deleteOrderCont)
 
-export default router
+module.exports = router
