@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { model } from 'mongoose'
 
 const productSchema = mongoose.Schema({
   id: {
@@ -8,6 +8,6 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-});
+})
 
-export default model("Product", productSchema);
+export default model('Product', productSchema)

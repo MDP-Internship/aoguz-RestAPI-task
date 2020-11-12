@@ -1,5 +1,5 @@
-import mongoose, { model } from "mongoose";
-import orderModel from "../model/Order";
+import mongoose, { model } from 'mongoose'
+import orderModel from '../model/Order'
 
 const userSchema = mongoose.Schema({
   id: {
@@ -12,6 +12,6 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   orders: { orderModel },
-});
+})
 
-export default model("User", userSchema);
+export default model('User', userSchema)

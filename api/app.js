@@ -1,9 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
-import userRoute from './routes/user'
-import orderRoute from './routes/order'
-import productRoute from './routes/product'
+import orderRoute from './routes/order.js'
+import userRoute from './routes/user.js'
+import productRoute from './routes/product.js'
 
 console.log(userRoute)
 console.log(orderRoute)

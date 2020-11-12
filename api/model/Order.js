@@ -1,5 +1,5 @@
-import mongoose, { model } from "mongoose";
-import moduleName from "../model/Product";
+import mongoose, { model } from 'mongoose'
+import moduleName from '../model/Product'
 const orderScheme = mongoose.Schema([
   {
     id: {
@@ -16,6 +16,6 @@ const orderScheme = mongoose.Schema([
       default: Date.now(),
     },
   },
-]);
+])
 
-export default model("Order", orderScheme);
+export default model('Order', orderScheme)
