@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const productShema = require('../model/Product.js')
-const orderScheme = mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   id: {
     type: String,
   },
@@ -8,10 +8,11 @@ const orderScheme = mongoose.Schema({
   count: {
     type: String,
   },
+  product: mongoose.model('Product').schema,
   date: {
     type: Date,
     default: Date.now(),
   },
 })
 
-module.exports = mongoose.model('Order', orderScheme)
+module.exports = mongoose.model('Order', orderSchema)
