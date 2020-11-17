@@ -28,6 +28,6 @@ var db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error'))
 
 // listening
-app.listen(3000, () => {
-  console.log('3000 portu çalıştırıldı')
+app.listen(3005, () => {
+  console.log('3005 portu çalıştırıldı')
 })

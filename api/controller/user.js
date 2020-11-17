@@ -1,3 +1,4 @@
+const { count } = require('../model/User.js')
 const Users = require('../model/User.js')
 
 class UserController {
@@ -11,7 +12,7 @@ class UserController {
     const postUsers = new Users({
       name: req.body.name,
       surname: req.body.surname,
-      orders: req.body.orderModel,
+      orders: [req.body.orders],
     })
 
     postUsers
@@ -29,7 +30,17 @@ class UserController {
       const updatedUser = new Users.updateOne(
         { _id: req.params.userId },
         { $set: { name: req.body.name } },
-        { $set: { surname: req.body.surname } }
+        { $set: { surname: req.body.surname } },
+        {
+          $set: {
+            orders: [
+              {
+                $set: { count: req.body.orders.count },
+                $set: { product: req.body.orders.product },
+              },
+            ],
+          },
+        }
 
         // orders kendi içinden mi güncelleniyor ??
       )

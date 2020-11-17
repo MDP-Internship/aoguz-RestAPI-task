@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   surname: {
     type: String,
   },
-  orders: mongoose.model('Order').schema,
+  orders: [mongoose.model('Order').schema],
 })
 
 module.exports = mongoose.model('User', userSchema)

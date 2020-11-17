@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
   count: {
     type: String,
   },
-  product: mongoose.model('Product').schema,
+  product: [mongoose.model('Product').schema],
   date: {
     type: Date,
     default: Date.now(),

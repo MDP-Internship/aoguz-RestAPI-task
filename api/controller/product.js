@@ -1,5 +1,6 @@
 const Product = require('../model/Product.js')
 class ProductController {
+  //tüm ürünleri getirir
   static async getProductCont(req, res, next) {
     Product.find({}, (err, product) => {
       //find {} ile tüm veriler üzerinde arama yapar.
@@ -7,10 +8,23 @@ class ProductController {
     })
   }
 
+  //idye göre arama
+  static async findProductById(req, res, next) {
+    try {
+      var findProduct = await Product.findById(req.params.productId)
+      res.json(findProduct)
+    } catch (err) {
+      res.json({
+        message: "ID' ye göre arama işleminde hata oluştu",
+        errorCode: err,
+      })
+    }
+  }
+
   static async postProductCont(req, res, next) {
     const product = new Product({
-      productInfo: req.body.productInfo,
-      price: req.body.price,
+      product_id: req.body.product_id,
+      product_info: req.body.product_info,
     })
     product
       .save()
@@ -24,16 +38,15 @@ class ProductController {
 
   static async updateProductCont(req, res, next) {
     try {
-      const updatedProduct = await Product.findOne(
-        { _id: req.params.productId },
-        { $set: { productInfo: req.params.productId } },
-        { $set: { price: req.params.price } }
+      const updatedProduct = await Product.updateOne(
+        { product_id: req.params.product_id },
+        { $set: { product_info: req.body.product_info } }
       )
       res.json(updatedProduct)
     } catch (err) {
       res.json({
         message: 'Güncelleme işlemi yapılırken hata oluştu',
-        errorCode: error,
+        errorCode: err,
       })
     }
   }

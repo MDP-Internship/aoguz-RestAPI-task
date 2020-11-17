@@ -1,16 +1,35 @@
 const Order = require('../model/Order.js')
 
 class OrderController {
+  // tüm orderları getirir
+
   static async getOrderCont(req, res, next) {
     Order.find({}, (err, order) => {
       res.send(order)
     })
   }
 
+  //id ye göre arama
+  static async findOrderById(req, res, next) {
+    try {
+      const findOrder = await Order.findById(req.params.orderId)
+      res.json(findOrder)
+    } catch (err) {
+      res.json({
+        message: "ID' ye göre arama işleminde hata oluştu",
+        errorCode: err,
+      })
+    }
+  }
+
   static async postOrderCont(req, res, next) {
     const orderPost = new Order({
-      product: req.body.product,
       count: req.body.count,
+      product: [
+        {
+          /*   product_id: req.body.product.product_id, */
+        },
+      ],
     })
 
     orderPost
@@ -25,10 +44,20 @@ class OrderController {
 
   static async updateOrderCont(req, res, next) {
     try {
-      const updatedOrder = new Order.findOne(
+      const updatedOrder = new Order.updateOne(
         { _id: req.params.orderId },
-        { $set: { product: req.params.product } },
+
         { $set: { count: req.params.count } },
+        {
+          $set: {
+            product: [
+              {
+                product_id: req.params.product.product_id,
+              },
+            ],
+          },
+        },
+
         res.json(updatedOrder)
       )
     } catch (error) {

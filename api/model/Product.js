@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
 const productShema = new mongoose.Schema({
-  id: {
+  _id: false,
+  product_id: {
     type: String,
   },
-  productInfo: {
+  product_info: {
     type: String,
   },
 })
