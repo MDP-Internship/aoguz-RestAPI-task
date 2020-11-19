@@ -9,10 +9,10 @@ class UserController {
   }
 
   static async postUserCont(req, res, next) {
-    const postUsers = new Users({
+    const postUsers = await Users({
       name: req.body.name,
       surname: req.body.surname,
-      orders: [req.body.orders],
+      orders: req.body.orders,
     })
 
     postUsers
@@ -27,7 +27,7 @@ class UserController {
 
   static async updateUserCont(req, res, next) {
     try {
-      const updatedUser = new Users.updateOne(
+      const updatedUser = await Users.updateOne(
         { _id: req.params.userId },
         { $set: { name: req.body.name } },
         { $set: { surname: req.body.surname } },
