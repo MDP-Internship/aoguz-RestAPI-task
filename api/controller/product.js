@@ -23,7 +23,6 @@ class ProductController {
 
   static async postProductCont(req, res, next) {
     const product = new Product({
-      product_id: req.body.product_id,
       product_info: req.body.product_info,
     })
     product
