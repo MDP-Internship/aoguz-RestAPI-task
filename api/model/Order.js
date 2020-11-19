@@ -1,10 +1,7 @@
 const mongoose = require('mongoose')
 const productShema = require('../model/Product.js')
 const orderSchema = new mongoose.Schema({
-  id: {
-    type: String,
-  },
-
+  id: { type: mongoose.Schema.Types.ObjectId },
   count: {
     type: String,
   },

@@ -25,11 +25,7 @@ class OrderController {
   static async postOrderCont(req, res, next) {
     const orderPost = new Order({
       count: req.body.count,
-      product: [
-        {
-          /*   product_id: req.body.product.product_id, */
-        },
-      ],
+      product: req.body.product,
     })
 
     orderPost
