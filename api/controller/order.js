@@ -1,4 +1,9 @@
+const { count } = require('../model/Order.js')
 const Order = require('../model/Order.js')
+const Product = require('../model/Product.js')
+const User = require('../model/User')
+const isUser = require('../utils/utils')
+const isHaveProduct = require('../utils/product_control')
 
 class OrderController {
   // tüm orderları getirir
@@ -23,56 +28,22 @@ class OrderController {
   }
 
   static async postOrderCont(req, res, next) {
-    const orderPost = new Order({
-      count: req.body.count,
-      product: req.body.product,
-    })
+    const { user_id, product } = req.body
 
-    orderPost
-      .save()
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((error) => {
-        console.log('post işlemi ile ilgili hata var. Hata kodu : ' + error)
-      })
-  }
+    const isUserResult = await isUser(user_id)
+    if (isUserResult.res) {
+      /*  console.log(isUserResult.user) */
+    } else {
+      console.log('girmedi')
 
-  static async updateOrderCont(req, res, next) {
-    try {
-      const updatedOrder = new Order.updateOne(
-        { _id: req.params.orderId },
-
-        { $set: { count: req.params.count } },
-        {
-          $set: {
-            product: [
-              {
-                product_id: req.params.product.product_id,
-              },
-            ],
-          },
-        },
-
-        res.json(updatedOrder)
-      )
-    } catch (error) {
       res.json({
-        message: 'Silme işlemi yapılırken hata oluştu',
-        errorCode: error,
+        message: isUserResult.message,
       })
     }
-  }
-  static async deleteOrderCont(req, res, next) {
-    try {
-      const deletedOrder = new Order.remove({ _id: req.params.orderId })
-      res.json(deletedOrder)
-    } catch (error) {
-      res.json({
-        message: 'Silme işlemi yapılırken hata oluştu',
-        errorCode: error,
-      })
-    }
+
+    isHaveProduct(product[0])
+    console.log('PRODUCT : ' + product[0]._id)
   }
 }
+
 module.exports = OrderController
