@@ -1,11 +1,37 @@
+const User = require('../model/User.js')
 const { count } = require('../model/User.js')
 const Users = require('../model/User.js')
 
 class UserController {
   static async getUserCont(req, res, next) {
     Users.find({}, function (err, user) {
-      res.send(user)
+      res.json(user)
     })
+  }
+  static async totalUserCont(req, res, next) {
+    User.aggregate(
+      [
+        ,/* { $unwind: '$orders' },
+        {
+          $group: {
+            _id: '$orders._id',
+            total: { $sum: '$orders.count' },
+          },
+        }, */
+      ],
+      function (err, response) {
+        console.log(response)
+      }
+    )
+
+    /*  User.count(
+      {
+        'orders.count': '$orders.count',
+      },
+      function (err, number) {
+        console.log(number)
+      }
+    ) */
   }
 
   static async postUserCont(req, res, next) {

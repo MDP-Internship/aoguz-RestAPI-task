@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const orderModel = require('../model/Order.js')
 
 const userSchema = new mongoose.Schema({
-  id: {
-    type: String,
+  _id: {
+    type: mongoose.Types.ObjectId,
   },
   name: {
     type: String,
