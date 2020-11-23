@@ -2,8 +2,9 @@ const { count } = require('../model/Order.js')
 const Order = require('../model/Order.js')
 const Product = require('../model/Product.js')
 const User = require('../model/User')
-const isUser = require('../utils/utils')
-const isHaveProduct = require('../utils/product_control')
+const { isUser, isHaveProduct } = require('../utils/utils')
+
+const { add } = require('../service/order_service.js')
 
 class OrderController {
   // tüm orderları getirir
@@ -31,8 +32,10 @@ class OrderController {
     const { user_id, product } = req.body
 
     const isUserResult = await isUser(user_id)
+    const isProductResult = await isHaveProduct(product)
     if (isUserResult.res) {
-      /*  console.log(isUserResult.user) */
+      console.log(isUserResult.user)
+      /* console.log('girdiii') */
     } else {
       console.log('girmedi')
 
@@ -40,9 +43,28 @@ class OrderController {
         message: isUserResult.message,
       })
     }
+    if (isProductResult.res) {
+      console.log(isProductResult.product)
+    } else {
+      console.log('product yok')
+      res.json({
+        message: isProductResult.message,
+      })
+    }
 
-    isHaveProduct(product[0])
-    console.log('PRODUCT : ' + product[0]._id)
+    if (isUserResult.res && isProductResult.res) {
+      console.log('son sorgu girdi')
+
+      const orderPostResult = add(user_id, product)
+      res.json({
+        orderPostResult,
+      })
+
+      await User.update(
+        { _id: isUserResult.user._id },
+        { $push: { orders: orderPostResult } }
+      )
+    }
   }
 }
 
