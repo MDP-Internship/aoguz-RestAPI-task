@@ -38,7 +38,7 @@ class UserController {
     const postUsers = await Users({
       name: req.body.name,
       surname: req.body.surname,
-      orders: req.body.orders,
+      orders: [],
     })
 
     postUsers
@@ -47,7 +47,7 @@ class UserController {
         res.json(data)
       })
       .catch((err) => {
-        console.log('post işlemi sırasında hata çıktı hata kodu : ' + err)
+        console.log('user post işlemi sırasında hata çıktı hata kodu : ' + err)
       })
   }
 
