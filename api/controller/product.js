@@ -1,5 +1,9 @@
 const Product = require('../model/Product.js')
-const { productAdd } = require('../service/product_service')
+const {
+  productAdd,
+  productFindById,
+  deleteProduct,
+} = require('../service/product_service')
 const { isProductValidation } = require('../utils/validate')
 class ProductController {
   //tüm ürünleri getirir
@@ -13,7 +17,8 @@ class ProductController {
   //idye göre arama
   static async findProductById(req, res, next) {
     try {
-      var findProduct = await Product.findById(req.params.productId)
+      const productId = req.params.productId
+      var findProduct = productFindById(productId)
       res.json(findProduct)
     } catch (err) {
       res.json({
@@ -51,9 +56,8 @@ class ProductController {
   }
   static async deleteProductCont(req, res, next) {
     try {
-      const deletedProduct = await Product.deleteOne({
-        _id: req.params.productId,
-      })
+      const { product_id } = req.params.productId
+      const deletedProduct = await deletedProduct(product_id)
       res.json(deletedProduct)
     } catch (error) {
       res.json({
