@@ -1,6 +1,7 @@
 const User = require('../model/User.js')
 const { count } = require('../model/User.js')
-const Users = require('../model/User.js')
+const { userAdd } = require('../service/user_service')
+const { isUserInfoValidation } = require('../utils/validate.js')
 
 class UserController {
   static async getUserCont(req, res, next) {
@@ -35,53 +36,21 @@ class UserController {
   }
 
   static async postUserCont(req, res, next) {
-    const postUsers = await Users({
-      name: req.body.name,
-      surname: req.body.surname,
-      orders: [],
-    })
+    const { name, surname, orders } = req.body
+    const reqFullBody = req.body
+    const isUserInfoValidationResult = isUserInfoValidation(reqFullBody)
 
-    postUsers
-      .save()
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => {
-        console.log('user post işlemi sırasında hata çıktı hata kodu : ' + err)
-      })
-  }
-
-  static async updateUserCont(req, res, next) {
-    try {
-      const updatedUser = await Users.updateOne(
-        { _id: req.params.userId },
-        { $set: { name: req.body.name } },
-        { $set: { surname: req.body.surname } },
-        {
-          $set: {
-            orders: [
-              {
-                $set: { count: req.body.orders.count },
-                $set: { product: req.body.orders.product },
-              },
-            ],
-          },
-        }
-
-        // orders kendi içinden mi güncelleniyor ??
-      )
-      res.json(updatedUser)
-    } catch (error) {
-      res.json({
-        message: 'Güncelleme işlemi yapılırken hata oluştu',
-        errorCode: error,
-      })
+    if (!isUserInfoValidationResult.res) {
+      const userResult = await userAdd(name, surname, orders)
+      res.json(userResult)
+    } else {
+      res.send(isUserInfoValidationResult.error)
     }
   }
 
   static async deleteUserCont(req, res, next) {
     try {
-      const deletedUser = await Users.remove({ _id: req.params.userId })
+      const deletedUser = await User.remove({ _id: req.params.userId })
       res.json(deletedUser)
     } catch (error) {
       res.json({
