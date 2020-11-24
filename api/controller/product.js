@@ -1,4 +1,6 @@
 const Product = require('../model/Product.js')
+const { productAdd } = require('../service/product_service')
+const { isProductValidation } = require('../utils/validate')
 class ProductController {
   //tüm ürünleri getirir
   static async getProductCont(req, res, next) {
@@ -22,17 +24,15 @@ class ProductController {
   }
 
   static async postProductCont(req, res, next) {
-    const product = new Product({
-      product_info: req.body.product_info,
-    })
-    product
-      .save()
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => {
-        console.log('post işlemi ile ilgili hata var. Hata kodu : ' + err)
-      })
+    const { product_info } = req.body
+    const isProductValidationResult = isProductValidation(product_info)
+
+    if (isProductValidationResult.res) {
+      const productResult = await productAdd(product_info)
+      res.json(productResult)
+    } else {
+      res.send(isProductValidationResult.err)
+    }
   }
 
   static async updateProductCont(req, res, next) {

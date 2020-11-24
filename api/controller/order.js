@@ -2,13 +2,12 @@ const { count } = require('../model/Order.js')
 const Order = require('../model/Order.js')
 const Product = require('../model/Product.js')
 const User = require('../model/User')
-const { isUser, isHaveProduct } = require('../utils/utils')
-
+const { isUser, isHaveProduct } = require('../utils/helpers')
+const { isOrderValidation } = require('../utils/validate')
 const { add } = require('../service/order_service.js')
 
 class OrderController {
   // tüm orderları getirir
-
   static async getOrderCont(req, res, next) {
     Order.find({}, (err, order) => {
       res.send(order)
@@ -33,6 +32,7 @@ class OrderController {
 
     const isUserResult = await isUser(user_id)
     const isProductResult = await isHaveProduct(product)
+    const isOrderValidationResult = await isOrderValidation(product)
     if (isUserResult.res) {
       console.log(isUserResult.user)
       /* console.log('girdiii') */
@@ -51,19 +51,20 @@ class OrderController {
         message: isProductResult.message,
       })
     }
+    if (isOrderValidationResult.res) {
+      if (isUserResult.res && isProductResult.res) {
+        console.log('son sorgu girdi')
 
-    if (isUserResult.res && isProductResult.res) {
-      console.log('son sorgu girdi')
+        const orderPostResult = add(user_id, product)
+        res.json(orderPostResult)
 
-      const orderPostResult = add(user_id, product)
-      res.json({
-        orderPostResult,
-      })
-
-      await User.update(
-        { _id: isUserResult.user._id },
-        { $push: { orders: orderPostResult } }
-      )
+        await User.update(
+          { _id: isUserResult.user._id },
+          { $push: { orders: orderPostResult } }
+        )
+      }
+    } else {
+      res.send(isOrderValidationResult.err)
     }
   }
 }
