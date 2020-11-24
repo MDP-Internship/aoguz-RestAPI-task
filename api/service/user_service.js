@@ -12,6 +12,11 @@ class UserService {
 
     return postUsers
   }
+
+  static async deleteUser(user_id) {
+    const deletedUser = await Users.remove({ _id: req.params.userId })
+    return deletedUser
+  }
 }
 
 module.exports = UserService
