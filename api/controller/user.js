@@ -8,24 +8,36 @@ class UserController {
     User.find({}, function (err, user) {
       res.json(user)
     })
-  }
-  static async totalUserCont(req, res, next) {
+
     User.aggregate(
       [
         { $unwind: '$orders' },
-        { $unwind: '$orders.product' },
+
         {
-          $group: {
-            _id: '$orders.product._id',
-            total: { $sum: '$orders.product.count' },
-          },
+          $project: { _id: '$_id', total: { $sum: '$orders.product.count' } },
         },
       ],
       function (err, response) {
         console.log(response)
       }
     )
-
+  }
+  static async totalUserCont(req, res, next) {
+    /*  const aggeregatUser = User.aggregate(
+      [
+        { $unwind: '$orders' },
+        { $unwind: '$orders.product' },
+        {
+          $group: {
+            _id: '$orders._id',
+            total: { $sum: '$orders.product.count' },
+          },
+        },
+      ],
+      function (err, response) {
+        res.json(response)
+      }
+    ) */
     /*  User.count(
       {
         'orders.count': '$orders.count',
