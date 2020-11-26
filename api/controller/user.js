@@ -1,5 +1,3 @@
-const User = require('../model/User.js')
-const { count, aggregate } = require('../model/User.js')
 const {
   userAdd,
   deleteUser,
