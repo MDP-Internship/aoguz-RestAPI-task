@@ -3,7 +3,7 @@ const UserController = require('../controller/user.js')
 
 const router = express.Router()
 router.get('/', UserController.getUserCont)
-router.get('/total', UserController.totalUserCont)
+
 router.post('/', UserController.postUserCont)
 
 router.delete('/:userId', UserController.deleteUserCont)

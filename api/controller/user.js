@@ -1,51 +1,21 @@
 const User = require('../model/User.js')
-const { count } = require('../model/User.js')
-const { userAdd, deleteUser } = require('../service/user_service')
+const { count, aggregate } = require('../model/User.js')
+const {
+  userAdd,
+  deleteUser,
+  aggregateUser,
+  userGet,
+} = require('../service/user_service')
 const { isUserInfoValidation } = require('../utils/validate.js')
 
 class UserController {
   static async getUserCont(req, res, next) {
-    User.find({}, function (err, user) {
-      res.json(user)
+    const aggerResult = await aggregateUser()
+    const userGetResult = await userGet()
+    res.json({
+      user: userGetResult,
+      total_orders: aggerResult,
     })
-
-    User.aggregate(
-      [
-        { $unwind: '$orders' },
-
-        {
-          $project: { _id: '$_id', total: { $sum: '$orders.product.count' } },
-        },
-      ],
-      function (err, response) {
-        console.log(response)
-      }
-    )
-  }
-  static async totalUserCont(req, res, next) {
-    /*  const aggeregatUser = User.aggregate(
-      [
-        { $unwind: '$orders' },
-        { $unwind: '$orders.product' },
-        {
-          $group: {
-            _id: '$orders._id',
-            total: { $sum: '$orders.product.count' },
-          },
-        },
-      ],
-      function (err, response) {
-        res.json(response)
-      }
-    ) */
-    /*  User.count(
-      {
-        'orders.count': '$orders.count',
-      },
-      function (err, number) {
-        console.log(number)
-      }
-    ) */
   }
 
   static async postUserCont(req, res, next) {
@@ -76,12 +46,3 @@ class UserController {
 }
 
 module.exports = UserController
-
-/* 
-{ $unwind: '$orders' },
-{
-  $group: {
-    _id: '$orders._id',
-    total: { $sum: '$orders.product.count' },
-  },
-}, */
