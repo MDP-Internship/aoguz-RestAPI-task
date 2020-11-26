@@ -1,6 +1,11 @@
 const Product = require('../model/Product')
 
 class ProductService {
+  static async getProduct() {
+    const getProductResult = await Product.find({})
+    return getProductResult
+  }
+
   static async productAdd(product_info) {
     const product = new Product({
       product_info: product_info,

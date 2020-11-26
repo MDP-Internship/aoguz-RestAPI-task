@@ -3,15 +3,14 @@ const {
   productAdd,
   productFindById,
   deleteProduct,
+  getProduct,
 } = require('../service/product_service')
 const { isProductValidation } = require('../utils/validate')
 class ProductController {
   //tüm ürünleri getirir
   static async getProductCont(req, res, next) {
-    Product.find({}, (err, product) => {
-      //find {} ile tüm veriler üzerinde arama yapar.
-      res.send(product)
-    })
+    const getProducts = await getProduct()
+    res.json(getProducts)
   }
 
   //idye göre arama
