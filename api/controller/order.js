@@ -4,20 +4,19 @@ const Product = require('../model/Product.js')
 const User = require('../model/User')
 const { isUser, isHaveProduct } = require('../utils/helpers')
 const { isOrderValidation } = require('../utils/validate')
-const { add } = require('../service/order_service.js')
+const { add, orderGet, findByOrderId } = require('../service/order_service.js')
 
 class OrderController {
   // tüm orderları getirir
   static async getOrderCont(req, res, next) {
-    Order.find({}, (err, order) => {
-      res.send(order)
-    })
+    const orderGetResult = await orderGet()
+    res.json(orderGet)
   }
 
   //id ye göre arama
   static async findOrderById(req, res, next) {
     try {
-      const findOrder = await Order.findById(req.params.orderId)
+      const findOrder = await findByOrderId()
       res.json(findOrder)
     } catch (err) {
       res.json({
@@ -26,6 +25,8 @@ class OrderController {
       })
     }
   }
+
+  static async findMountById(req, res, next) {}
 
   static async postOrderCont(req, res, next) {
     const { user_id, product } = req.body
