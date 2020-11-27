@@ -1,3 +1,5 @@
+const { date } = require('joi')
+const { where } = require('../model/Order')
 const Order = require('../model/Order')
 
 class OrderService {
@@ -6,8 +8,23 @@ class OrderService {
     return getOrder
   }
   static async findByOrderId(id) {
-    const findOrder = await Order.findById(req.params.orderId)
+    const findOrder = await Order.findById(id)
     return findOrder
+  }
+
+  static async findByMountNumber(mountt) {
+    const ordersSort = await Order.aggregate([
+      { $unwind: '$product' },
+      {
+        $project: {
+          product: '$product._id',
+          count: '$product.count',
+          day: { $dayOfMonth: '$date' },
+        },
+        $match: { day: 23 },
+      },
+    ])
+    return ordersSort
   }
 
   static add(userID, product) {

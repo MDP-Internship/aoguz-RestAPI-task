@@ -4,19 +4,24 @@ const Product = require('../model/Product.js')
 const User = require('../model/User')
 const { isUser, isHaveProduct } = require('../utils/helpers')
 const { isOrderValidation } = require('../utils/validate')
-const { add, orderGet, findByOrderId } = require('../service/order_service.js')
+const {
+  add,
+  orderGet,
+  findByOrderId,
+  findByMountNumber,
+} = require('../service/order_service.js')
 
 class OrderController {
   // tüm orderları getirir
   static async getOrderCont(req, res, next) {
     const orderGetResult = await orderGet()
-    res.json(orderGet)
+    res.json(orderGetResult)
   }
 
   //id ye göre arama
   static async findOrderById(req, res, next) {
     try {
-      const findOrder = await findByOrderId()
+      const findOrder = await findByOrderId(req.params.mountNumber)
       res.json(findOrder)
     } catch (err) {
       res.json({
@@ -26,7 +31,20 @@ class OrderController {
     }
   }
 
-  static async findMountById(req, res, next) {}
+  static async findMountById(req, res, next) {
+    try {
+      const mount = req.params.monthNumber
+
+      const deneme = await findByMountNumber(mount)
+
+      console.log(deneme)
+    } catch (err) {
+      res.json({
+        message: 'Ay değişkenine göre arama işleminde hata oluştu',
+        errorCode: err,
+      })
+    }
+  }
 
   static async postOrderCont(req, res, next) {
     const { user_id, product } = req.body
