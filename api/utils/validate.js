@@ -1,4 +1,5 @@
 const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
 
 exports.isUserInfoValidation = function isUserInfoValidation(object) {
   const schema = Joi.object({
@@ -25,10 +26,9 @@ exports.isUserInfoValidation = function isUserInfoValidation(object) {
 }
 
 exports.isProductValidation = function isProdutValidation(object) {
-  const productObject = Joi.object({
+  const schema = Joi.object({
     product_info: Joi.string().required().min(1),
   })
-  const schema = Joi.object().items(productObject)
 
   const productResult = schema.validate(object, { abortEarly: false })
 
@@ -48,16 +48,15 @@ exports.isProductValidation = function isProdutValidation(object) {
 }
 
 exports.isOrderValidation = function isOrderValidation(object) {
-  const orderObject = Joi.object({
+  const schema = Joi.object({
+    _id: Joi.objectId(),
     count: Joi.number().required(),
   })
-
-  const schema = Joi.object().items(orderObject)
 
   const orderResult = schema.validate(object, { abortEarly: false })
   if (orderResult.error) {
     return {
-      res: false,
+      res: true,
       err: {
         message: orderResult.error.message,
         value: orderResult.error.details[0].context.value,
@@ -65,7 +64,7 @@ exports.isOrderValidation = function isOrderValidation(object) {
     }
   } else {
     return {
-      res: true,
+      res: false,
     }
   }
 }
