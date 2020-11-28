@@ -2,6 +2,7 @@ const { count } = require('../model/Order.js')
 const Order = require('../model/Order.js')
 const Product = require('../model/Product.js')
 const User = require('../model/User')
+const mongoose = require('mongoose')
 const { isUser, isHaveProduct } = require('../utils/helpers')
 const { isOrderValidation } = require('../utils/validate')
 const {
@@ -33,11 +34,11 @@ class OrderController {
 
   static async findMountById(req, res, next) {
     try {
-      const mount = req.params.monthNumber
+      const mount = parseInt(req.params.monthNumber)
 
-      const deneme = await findByMountNumber(mount)
+      const ordersSort = await findByMountNumber(mount)
 
-      console.log(deneme)
+      console.log(ordersSort)
     } catch (err) {
       res.json({
         message: 'Ay değişkenine göre arama işleminde hata oluştu',
@@ -70,6 +71,7 @@ class OrderController {
         message: isProductResult.message,
       })
     }
+
     if (isOrderValidationResult.res) {
       if (isUserResult.res && isProductResult.res) {
         console.log('son sorgu girdi')

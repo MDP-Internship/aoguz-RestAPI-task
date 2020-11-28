@@ -12,16 +12,33 @@ class OrderService {
     return findOrder
   }
 
-  static async findByMountNumber(mountt) {
+  static async findByMountNumber(dayNumber) {
     const ordersSort = await Order.aggregate([
       { $unwind: '$product' },
       {
         $project: {
-          product: '$product._id',
-          count: '$product.count',
-          day: { $dayOfMonth: '$date' },
+          _id: '$_id',
+          product: '$product',
+          countt: '$product.count',
+          days: { $dayOfMonth: '$date' },
         },
-        $match: { day: 23 },
+      },
+
+      { $match: { days: dayNumber } },
+
+      {
+        $group: {
+          _id: {
+            order_id: '$_id',
+            day: '$days',
+          },
+
+          total_count: { $sum: '$product.count' },
+        },
+      },
+
+      {
+        $sort: { total_count: -1 },
       },
     ])
     return ordersSort
