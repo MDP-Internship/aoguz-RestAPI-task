@@ -3,6 +3,7 @@ const {
   deleteUser,
   aggregateUser,
   userGet,
+  findByDayNumber,
 } = require('../service/user_service')
 const { isUserInfoValidation } = require('../utils/validate.js')
 
@@ -14,6 +15,21 @@ class UserController {
       user: userGetResult,
       total_orders: aggerResult,
     })
+  }
+
+  static async findDayById(req, res, next) {
+    try {
+      const mount = parseInt(req.params.dayNumber)
+
+      const ordersSort = await findByDayNumber(mount)
+
+      console.log(ordersSort)
+    } catch (err) {
+      res.json({
+        message: 'Ay değişkenine göre arama işleminde hata oluştu',
+        errorCode: err,
+      })
+    }
   }
 
   static async postUserCont(req, res, next) {
