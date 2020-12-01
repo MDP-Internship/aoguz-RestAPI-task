@@ -12,7 +12,7 @@ class OrderService {
     return findOrder
   }
 
-  static async findByMountNumber(dayNumber) {
+  static async findByDayNumber(dayNumber) {
     const ordersSort = await Order.aggregate([
       { $unwind: '$product' },
       {
