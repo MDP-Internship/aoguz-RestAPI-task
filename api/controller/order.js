@@ -9,7 +9,7 @@ const {
   add,
   orderGet,
   findByOrderId,
-  findByMountNumber,
+  findByDayNumber,
 } = require('../service/order_service.js')
 
 class OrderController {
@@ -32,11 +32,11 @@ class OrderController {
     }
   }
 
-  static async findMountById(req, res, next) {
+  static async findDayById(req, res, next) {
     try {
-      const mount = parseInt(req.params.monthNumber)
+      const day = parseInt(req.params.dayNumber)
 
-      const ordersSort = await findByMountNumber(mount)
+      const ordersSort = await findByDayNumber(day)
 
       console.log(ordersSort)
     } catch (err) {
