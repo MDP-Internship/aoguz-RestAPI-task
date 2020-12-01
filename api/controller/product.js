@@ -1,48 +1,62 @@
-import Product from '../model/Product'
-
+const Product = require('../model/Product.js')
+const {
+  productAdd,
+  productFindById,
+  deleteProduct,
+  getProduct,
+} = require('../service/product_service')
+const { isProductValidation } = require('../utils/validate')
 class ProductController {
+  //tüm ürünleri getirir
   static async getProductCont(req, res, next) {
-    Product.find({}, (err, product) => {
-      //find {} ile tüm veriler üzerinde arama yapar.
-      res.send(product)
-    })
+    const getProducts = await getProduct()
+    res.json(getProducts)
+  }
+
+  //idye göre arama
+  static async findProductById(req, res, next) {
+    try {
+      const productId = req.params.productId
+      var findProduct = productFindById(productId)
+      res.json(findProduct)
+    } catch (err) {
+      res.json({
+        message: "ID' ye göre arama işleminde hata oluştu",
+        errorCode: err,
+      })
+    }
   }
 
   static async postProductCont(req, res, next) {
-    const product = new Product({
-      productInfo: req.body.productInfo,
-      price: req.body.price,
-    })
-    product
-      .save()
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => {
-        console.log('post işlemi ile ilgili hata var. Hata kodu : ' + err)
-      })
+    const { product_info } = req.body
+    const isProductValidationResult = isProductValidation(product_info)
+
+    if (isProductValidationResult.res) {
+      const productResult = await productAdd(product_info)
+      res.json(productResult)
+    } else {
+      res.send(isProductValidationResult.err)
+    }
   }
 
   static async updateProductCont(req, res, next) {
     try {
-      const updatedProduct = await Product.findOne(
-        { _id: req.params.productId },
-        { $set: { productInfo: req.params.productId } },
-        { $set: { price: req.params.price } }
+      const updatedProduct = await Product.updateOne(
+        { product_id: req.params.product_id },
+        { $set: { product_info: req.body.product_info } }
       )
       res.json(updatedProduct)
     } catch (err) {
       res.json({
         message: 'Güncelleme işlemi yapılırken hata oluştu',
-        errorCode: error,
+        errorCode: err,
       })
     }
   }
   static async deleteProductCont(req, res, next) {
     try {
-      const deletedProduct = await Product.deleteOne({
-        _id: req.params.productId,
-      })
+      const { product_id } = req.params.productId
+      const deletedProduct = await deletedProduct(product_id)
       res.json(deletedProduct)
     } catch (error) {
       res.json({
@@ -52,4 +66,4 @@ class ProductController {
     }
   }
 }
-export default ProductController
+module.exports = ProductController

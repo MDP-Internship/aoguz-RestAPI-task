@@ -1,17 +1,14 @@
-import mongoose, { model } from 'mongoose'
-import orderModel from '../model/Order'
+const mongoose = require('mongoose')
+const orderModel = require('../model/Order.js')
 
-const userSchema = mongoose.Schema({
-  id: {
-    type: String,
-  },
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
   },
   surname: {
     type: String,
   },
-  orders: { orderModel },
+  orders: [],
 })
 
-export default model('User', userSchema)
+module.exports = mongoose.model('User', userSchema)

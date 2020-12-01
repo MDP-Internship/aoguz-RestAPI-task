@@ -1,9 +1,10 @@
-import { Router } from 'express'
-import OrderController from '../controller/order'
-const router = Router()
-router.get('/', OrderController.getOrderCont)
-router.post('/', OrderController.postOrderCont)
-router.patch('/:orderId', OrderController.updateOrderCont)
-router.delete('/:orderId', OrderController.deleteOrderCont)
+const express = require('express')
 
-export default router
+const router = express.Router()
+const OrderController = require('../controller/order.js')
+router.get('/', OrderController.getOrderCont)
+router.get('/search/:orderId', OrderController.findOrderById)
+router.get('/day/:dayNumber', OrderController.findDayById)
+router.post('/', OrderController.postOrderCont)
+
+module.exports = router

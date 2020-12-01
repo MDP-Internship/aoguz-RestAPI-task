@@ -1,50 +1,54 @@
-import Users from '../model/User'
+const {
+  userAdd,
+  deleteUser,
+  aggregateUser,
+  userGet,
+  findByDayNumber,
+} = require('../service/user_service')
+const { isUserInfoValidation } = require('../utils/validate.js')
 
 class UserController {
   static async getUserCont(req, res, next) {
-    Users.find({}, function (err, user) {
-      res.send(user)
+    const aggerResult = await aggregateUser()
+    const userGetResult = await userGet()
+    res.json({
+      user: userGetResult,
+      total_orders: aggerResult,
     })
+  }
+
+  static async findDayById(req, res, next) {
+    try {
+      const mount = parseInt(req.params.dayNumber)
+
+      const ordersSort = await findByDayNumber(mount)
+
+      console.log(ordersSort)
+    } catch (err) {
+      res.json({
+        message: 'Ay değişkenine göre arama işleminde hata oluştu',
+        errorCode: err,
+      })
+    }
   }
 
   static async postUserCont(req, res, next) {
-    const postUsers = new Users({
-      name: req.body.name,
-      surname: req.body.surname,
-      orders: req.body.orderModel,
-    })
+    const { name, surname, orders } = req.body
+    const reqFullBody = req.body
+    const isUserInfoValidationResult = isUserInfoValidation(reqFullBody)
 
-    postUsers
-      .save()
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => {
-        console.log('post işlemi sırasında hata çıktı hata kodu : ' + err)
-      })
-  }
-
-  static async updateUserCont(req, res, next) {
-    try {
-      const updatedUser = new Users.updateOne(
-        { _id: req.params.userId },
-        { $set: { name: req.body.name } },
-        { $set: { surname: req.body.surname } }
-
-        // orders kendi içinden mi güncelleniyor ??
-      )
-      res.json(updatedUser)
-    } catch (error) {
-      res.json({
-        message: 'Güncelleme işlemi yapılırken hata oluştu',
-        errorCode: error,
-      })
+    if (!isUserInfoValidationResult.res) {
+      const userResult = await userAdd(name, surname, orders)
+      res.json(userResult)
+    } else {
+      res.send(isUserInfoValidationResult.error)
     }
   }
 
   static async deleteUserCont(req, res, next) {
     try {
-      const deletedUser = await Users.remove({ _id: req.params.userId })
+      const { user_id } = req.params.userId
+      const deletedUser = deleteUser(user_id)
       res.json(deletedUser)
     } catch (error) {
       res.json({
@@ -55,4 +59,4 @@ class UserController {
   }
 }
 
-export default UserController
+module.exports = UserController
