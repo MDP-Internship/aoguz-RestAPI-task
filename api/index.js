@@ -28,6 +28,5 @@ var db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error'))
 
 // listening
-app.listen(3000, () => {
-  console.log('3000 portu çalıştırıldı')
-})
+const porta = process.env.PORT || 8080
+app.listen(porta, () => console.log('Example app listening on port 8080!'))
